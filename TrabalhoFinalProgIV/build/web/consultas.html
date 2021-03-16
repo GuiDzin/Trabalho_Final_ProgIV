@@ -1,0 +1,207 @@
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+
+            input[type=button],[type=submit]{
+                display: inline;
+                width: 100px;
+                padding: 3px;
+                border-radius: 20px;
+                background-color: #5C8997;
+                border-color: transparent;
+                color: red;
+                font-weight: bold;
+                font-size: 16px;
+            }
+            input[type=search]{
+                margin-top: 5px;
+                display: inline-block;
+                width: 40%;
+                padding: 5px;
+                margin-bottom: 15px;
+                border-color: transparent;
+                border-radius: 10px;
+            }
+
+            table thead tr th{
+                padding: 20px;
+                text-align: center;
+            }
+            table thbody tr th{
+                padding-left: 100px;
+            }
+            .produto-single{
+                display: inline;
+                margin: 0;
+            }
+            .produto-single p{
+                margin-right: 20px;
+                font-weight: bold;
+            }
+            
+            .produto-single a{
+               
+                color: red;
+                font-weight: bold;
+                border-radius: 4px;
+                border: 40px;
+            }
+            #produtos{
+                background-color: #FBFEFF;
+            }
+            
+            .info-single-checkout{
+                background-color: #C4C4C4;
+                padding: 8px;
+            }
+          
+            .botao{
+                display: inline !important;
+                width: 115px;                
+                border-radius: 20px;
+                background-color: #5C8997;
+                border-color: transparent;
+                color: red;
+                font-weight: bold;
+                font-size: 16px;
+                padding: 6px;
+                text-decoration: none;
+                margin-top: 15px;
+            }
+            #cancelar{
+                display: inline !important;
+                width: 115px;                
+                border-radius: 20px;
+                border-color: transparent;
+                font-weight: bold;
+                font-size: 16px;
+                padding: 6px;
+                text-decoration: none;
+                margin-top: 15px;
+                background-color: #FF8F96;
+                color: white;
+            }
+         
+
+
+        </style>
+    </head>
+    <body>
+        <input type="checkbox" id="check"/>
+        <label for="check">Venda a prazo?</label>
+        <input type="button" value="Abrir" /> <br>
+
+        <p>Digite a descrição do produto</p>
+        <form >
+            <input type='search' name='pesquisa' >
+            <input type='submit' value='Pesquisar'>
+
+        </form>
+
+        <div id="tudo">
+            <div class="content">
+                <h2>Produtos</h2>
+                <div id="produtos">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Descrição</th>
+                                <th>Preço Unitáro</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <h2>Carrinho</h2>
+                <div id="carrinho">					
+                </div>
+
+                <br>
+                <h2>Pagamento</h2>
+                <div id="total">
+                    
+                </div>
+
+                <script>
+                    const items = [
+                        {
+                            id: 0,
+                            nome: 'Feijão',
+                            preco: 7.8,
+                            quantidade: 0,
+                        },
+
+                        {
+                            id: 1,
+                            nome: 'Arroz',
+                            preco: 10.5,
+                            quantidade: 0,
+                        },
+                        {
+                            id: 2,
+                            nome: 'Suco',
+                            preco: 3.9,
+                            quantidade: 0,
+                        }
+
+                    ]
+
+                    inicializarLoja = () => {
+                        var containerProdutos = document.getElementById('produtos');
+                        items.map((val) => {
+                            containerProdutos.innerHTML += '<div class="produto-single">\n\
+                                        <p style="display:inline; padding-left:25px">' + val.id + '</p>\n\
+                                        <p style="display:inline; padding-left:40px">' + val.nome + '</p>\n\
+                                        <p style="display:inline; padding-left:50px"> R$ ' + val.preco.toFixed(2) + '</p>\n\
+                                        <a  style="display:inline" key="' + val.id + '"href="#">Adicionar ao carrinho!<a/><br><br></div>';
+                        });
+                    }
+
+                    inicializarLoja();
+
+                    atualizarCarrinho = () => {
+                        var containerCarrinho = document.getElementById('carrinho');
+                        var containerTotal = document.getElementById('total');
+                        containerCarrinho.innerHTML = "";
+                        containerTotal.innerHTML = "";
+                        var pagamento = [0];
+                        items.map((val) => {
+                            if (val.quantidade > 0) {
+
+                                containerCarrinho.innerHTML += '<div class="info-single-checkout">\n\
+                                 <p style="display:inline; padding-left:50px">Produto: ' + val.nome + '</p>\n\
+                                 <p style="display:inline; padding-left:10%">Quantidade: ' + val.quantidade + '</p><div style="clear:both"></div></div>';
+                                pagamento.push(val.quantidade * val.preco);
+                            }
+                        });
+                        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+                        containerTotal.innerHTML += '<div class="produto-final"">\n\
+                        <p style="display:inline; padding-right:10%">Total: R$:' + pagamento.reduce(reducer).toFixed(2) + '</p>\n\
+                        <a class="botao" style="display:inline" href="inicio.jsp">Finalizar Pedido<a/>\n\
+                        <a id="cancelar" href="inicio.jsp">Cancelar</a></div>';
+
+                    }
+                    var links = document.getElementsByTagName('a');
+
+                    for (var i = 0; i < links.length; i++) {
+                        links[i].addEventListener("click", function () {
+                            let key = this.getAttribute('key');
+                            items[key].quantidade++;
+                            atualizarCarrinho();
+                            return false;
+                        });
+                    }
+
+                </script>
+
+
+
+            </div><!--content-->
+
+
+    </body>
+</html>
